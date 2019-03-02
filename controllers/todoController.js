@@ -3,6 +3,7 @@ var dbName = 'express-todo-tutorial'
 var url = 'mongodb://127.0.0.1:27017/' + dbName;
 
 exports.index = function(req, res, next) {
+  var dbClient;
   var connectionToDB = function() {
     return new Promise(function(resolve, reject) {
       MongoClient.connect(url, {useNewUrlParser: true}, function(error, client) {
@@ -16,7 +17,7 @@ exports.index = function(req, res, next) {
     });
   };
 
-  var getTodos = function({ client, db }) {
+  var getTodos = function(db) {
     return new Promise(function(resolve, reject) {
       db.collection('todos')
       .find({})
@@ -24,7 +25,6 @@ exports.index = function(req, res, next) {
         if (error) {
           reject(error);
         } else {
-          client.close();
           resolve(docs);
         }
       });
@@ -32,7 +32,8 @@ exports.index = function(req, res, next) {
   }
 
   connectionToDB()
-  .then(function(db) {
+  .then(function({ client, db }) {
+    dbClient = client;
     return getTodos(db);
   })
   .then(function(result) {
@@ -43,6 +44,9 @@ exports.index = function(req, res, next) {
   .catch(function(err) {
     console.log(err);
     next(err);
+  })
+  .then(function() {
+    dbClient.close();
   });
 };
 
