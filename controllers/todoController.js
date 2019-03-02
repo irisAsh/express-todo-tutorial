@@ -46,7 +46,9 @@ exports.index = function(req, res, next) {
     next(err);
   })
   .then(function() {
-    dbClient.close();
+    if (dbClient) {
+      dbClient.close();
+    }
   });
 };
 
