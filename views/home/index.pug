@@ -3,11 +3,15 @@ extends ../layout
 block content
   h1 TODO アプリ
   p 
-    | 残りのTODO: #{remainingTaskCount} [ 
-    a(href='') 一覧へ
+    | 残りのTODO: #{remainingTodoCount} [ 
+    a(href='/todo') 一覧へ
     |  ]
   p
-    | 今日のTODO: #{todayTaskCount} [ 
-    a(href='') 一覧へ
+    | 今日のTODO: #{todayTodoCount} [ 
+    a(href='/todo/today') 一覧へ
+    |  ]
+  p
+    | 完了済TODO: #{completedTodoCount} [ 
+    a(href='/todo/completed') 一覧へ
     |  ]
   a(href='') TODOの追加

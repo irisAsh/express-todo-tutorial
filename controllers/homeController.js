@@ -1,6 +1,7 @@
 exports.index = function(req, res) {
   res.render('home/index', {
-    remainingTaskCount: 4,
-    todayTaskCount: 2
+    remainingTodoCount: 4,
+    todayTodoCount: 2,
+    completedTodoCount: 1
   });
 };
