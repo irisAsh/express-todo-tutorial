@@ -9,3 +9,7 @@ exports.today = function(req, res) {
 exports.completed = function(req, res) {
   res.render('todo/completed');
 };
+
+exports.createGet = function(req, res) {
+  res.render('todo/create');
+};

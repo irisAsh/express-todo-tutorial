@@ -1,0 +1,27 @@
+extends ../layout
+
+block content
+  h1 TODO 作成
+
+  form(method='POST' action='')
+    div
+      label(for='title') タイトル：
+      input#title(type='text', placeholder='やること' name='title' required='true' value='' )
+    div
+      label(for='description') 詳細説明：
+      input#description(type='text', placeholder='買い物に行く' name='description' value='' )
+    div
+      label(for='status') ステータス：
+      select#status(name='status')
+        option(value='backlog', selected='selected') 未着手
+        option(value='progress') 着手中
+        option(value='completed') 完了済
+    div
+      label(for='estimatedDate') 予定時刻：
+      input#estimatedDate(type='datetime-local', name='estimatedDate' value='')
+    div
+      input(type='submit')
+
+  br
+  a(href='/') 戻る
+
