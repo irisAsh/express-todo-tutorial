@@ -15,6 +15,7 @@ var MongoClient = require('mongodb').MongoClient;
 
 MongoClient.connect(
   'mongodb://127.0.0.1:27017/express-todo-tutorial',
+  { useNewUrlParser: true },
   function(err, client) {
     console.log("Connected successfully to DB");
     client.close();
