@@ -8,5 +8,6 @@ router.get('/today', todoController.today);
 router.get('/completed', todoController.completed);
 
 router.get('/create', todoController.createGet);
+router.post('/create', todoController.createPost);
 
 module.exports = router;

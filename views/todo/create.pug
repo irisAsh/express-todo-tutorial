@@ -3,7 +3,7 @@ extends ../layout
 block content
   h1 TODO 作成
 
-  form(method='POST' action='')
+  form(method='POST' action='/todo/create')
     div
       label(for='title') タイトル：
       input#title(type='text', placeholder='やること' name='title' required='true' value='' )

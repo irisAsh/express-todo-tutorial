@@ -6,11 +6,14 @@ block content
     ul
       each todo in todos
         li
+          p #{todo.title}
+          p #{todo.description}
+          p #{todo.status}
+          p #{todo.estimatedDate}
           p
-            | #{todo.title} [
+            | [
             a(href='') 編集
-            | ] [
-            a(href='') 削除
             | ]
+            a(href='') 削除
   p
     a(href='/') 戻る
