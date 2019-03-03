@@ -1,4 +1,5 @@
-var MongoClient = require('mongodb').MongoClient;
+var mongodb = require('mongodb');
+var MongoClient = mongodb.MongoClient;
 var dbName = 'express-todo-tutorial'
 var url = 'mongodb://127.0.0.1:27017/' + dbName;
 
@@ -90,6 +91,41 @@ exports.createPost = function(req, res) {
       status,
       estimatedDate: new Date(estimatedDate)
     });
+  })
+  .then(function(result) {
+    res.redirect('/todo');
+  })
+  .catch(function(err) {
+    console.log(err);
+    next(err);
+  })
+  .then(function() {
+    if (dbClient) {
+      dbClient.close();
+    }
+  });
+};
+
+exports.delete = function(req, res) {
+  var dbClient;
+  var deleteOneTodo = function(db, id) {
+    return new Promise(function(resolve, reject) {
+      db.collection('todos')
+      .deleteOne({ _id: new mongodb.ObjectID(id) }, function(error, r) {
+        if (error) {
+          reject(error);
+        } else {
+          resolve(r);
+        }
+      });
+    });
+  };
+
+  connectionToDB()
+  .then(function({ client, db }) {
+    dbClient = client;
+    var { id } = req.params;
+    return deleteOneTodo(db, id);
   })
   .then(function(result) {
     res.redirect('/todo');
