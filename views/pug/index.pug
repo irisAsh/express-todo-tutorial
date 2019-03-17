@@ -1,0 +1,112 @@
+extends ../layout
+
+block content
+  h1 HTMLタグ
+  div
+    p パラグラフ
+    center センタリング
+    ul
+      li あ
+      li い
+  hr
+  h1 文章
+  p この
+    | 文章は
+    em 全て
+    | 一行の
+    span 表示
+    | になります。
+    br
+    | 改行はbrを使います。
+  p.
+    また、「タグ＋ドット」後の段落は、
+    そのタグによって囲まれます。
+  hr
+  h1 インターポーレーション
+  div
+    - var name = 'Pug'
+    p 私の名前は#{name}です。
+    p.
+      私の名前は#[em #{name}]です。
+    p 私の名前は#{'{' + name + '}'}です。
+    p 私の名前は\#{name}です。
+  hr
+  h1 属性
+  div
+    a(href="https://pugjs.org/api/getting-started.html" target="_blank")
+      | Pug公式サイト
+    br
+    input(type="checkbox" checked)
+    | Pug
+    |
+    input(type="checkbox" checked=true)
+    | Jade
+    |
+    input(type="checkbox" checked=false)
+    | EJS
+  hr
+  h1 Style属性
+  div
+    p(style="color:white;background-color:black;") 通常のHTMLでのStyle指定
+    p(style={color: 'red', 'background-color': 'yellow'}) Pugでオブジェクト形式でのStyle指定
+  hr
+  h1 Class/ID属性
+  div
+    p(class="a1 a2") 通常
+    p(class=['b1', 'b2']) 配列で指定
+    - classNames = ['c1', 'c2']
+    p(class=classNames) 変数で指定
+    p.d1.d2 .class名で指定
+    p#e1 #id名で指定
+    - var currentUrl = '/test'
+    p(class={f1: currentUrl === '/'}) 条件で指定
+    p(class={f1: currentUrl === '/test'}) 条件で指定
+  h1 コメント
+  div
+    // この行はコメントです。
+      HTMLのコメントになります。
+    //- このコメントはHTMLに表示されません。
+  h1 繰り返し処理
+  div
+    - for (var i = 0; i < 3; i++)
+      p #{i}
+    - var arr = ['Pug', 'Jade', 'EJS']
+    each el in arr
+      p #{el}
+  h1 Buffered Code 記法
+  div
+    - var name = 'Pug'
+    p= '私の名前は' + name + 'です。'
+    p= '<>の文字をエスケープしなくても表示できます。'
+  h1 Case 記法
+  div
+    - var rank = 'first'
+    case rank
+      when 'first'
+        p １番目
+      when 'second': p ２番目
+      when 'third'
+        - break
+      when 'fourth'
+      when 'fifth'
+        p ４番目と５番目
+      default
+        p その他
+  h1 IF/UNLESS
+  div
+    - var num = 0
+    if num === 0
+      p zero
+    else if num === 1
+      p one
+    else
+      p other
+    - var condition = false
+    unless condition
+     p FALSEです
+  h1 Mixins
+  div
+    mixin kao(left, right, color)
+      p(style='color:' + color) #{left} >【･ω･`三´･ω･】< #{right}
+    +kao('Pug', 'Jade', 'blue')
+    +kao('EJS', 'Handlebars', 'red')

@@ -1,0 +1,17 @@
+extends templates/layout
+
+block append scripts
+  script(src='/javascripts/pug/test_3.js')
+
+block prepend scripts
+  script(src='/javascripts/pug/test_2.js')
+
+//-
+  下記のコメントを外すとscriptsのブロックは上書きされます
+//-
+  block scripts
+    script(src='/javascripts/pug/test_4.js')
+
+block content
+  p テンプレートを読み込んでます
+  
