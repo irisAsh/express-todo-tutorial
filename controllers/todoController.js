@@ -2,6 +2,7 @@ var mongodb = require('mongodb');
 var MongoClient = mongodb.MongoClient;
 var dbName = 'express-todo-tutorial'
 var url = 'mongodb://127.0.0.1:27017/' + dbName;
+var dateUtils = require('../lib/dateUtils');
 
 var connectionToDB = function() {
   return new Promise(function(resolve, reject) {
@@ -40,7 +41,8 @@ exports.index = function(req, res, next) {
   })
   .then(function(result) {
     res.render('todo/index', {
-      todos: result
+      todos: result,
+      date2Str: dateUtils.date2Str
     });
   })
   .catch(function(err) {
