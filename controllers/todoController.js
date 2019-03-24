@@ -1,43 +1,28 @@
-var mongodb = require('mongodb');
-var MongoClient = mongodb.MongoClient;
-var dbName = 'express-todo-tutorial'
-var url = 'mongodb://127.0.0.1:27017/' + dbName;
+var dbUtils = require('../lib/dbUtils');
 var dateUtils = require('../lib/dateUtils');
+var todoQueries = require('../lib/todoQueries');
 
-var connectionToDB = function() {
+var getTodos = function(db, condition) {
   return new Promise(function(resolve, reject) {
-    MongoClient.connect(url, {useNewUrlParser: true}, function(error, client) {
+    db.collection('todos')
+    .find(condition)
+    .toArray(function(error, docs) {
       if (error) {
         reject(error);
       } else {
-        var db = client.db(dbName);
-        resolve({ client, db });
+        resolve(docs);
       }
     });
   });
-};
+}
 
 exports.index = function(req, res, next) {
   var dbClient;
 
-  var getTodos = function(db) {
-    return new Promise(function(resolve, reject) {
-      db.collection('todos')
-      .find({})
-      .toArray(function(error, docs) {
-        if (error) {
-          reject(error);
-        } else {
-          resolve(docs);
-        }
-      });
-    });
-  }
-
-  connectionToDB()
+  dbUtils.connectionToDB()
   .then(function({ client, db }) {
     dbClient = client;
-    return getTodos(db);
+    return getTodos(db, todoQueries.notCompleted());
   })
   .then(function(result) {
     res.render('todo/index', {
@@ -57,11 +42,53 @@ exports.index = function(req, res, next) {
 };
 
 exports.today = function(req, res) {
-  res.render('todo/today');
+  var dbClient;
+
+  dbUtils.connectionToDB()
+  .then(function({ client, db }) {
+    dbClient = client;
+    return getTodos(db, todoQueries.today());
+  })
+  .then(function(result) {
+    res.render('todo/today', {
+      todos: result,
+      date2Str: dateUtils.date2Str
+    });
+  })
+  .catch(function(err) {
+    console.log(err);
+    next(err);
+  })
+  .then(function() {
+    if (dbClient) {
+      dbClient.close();
+    }
+  });
 };
 
 exports.completed = function(req, res) {
-  res.render('todo/completed');
+  var dbClient;
+
+  dbUtils.connectionToDB()
+  .then(function({ client, db }) {
+    dbClient = client;
+    return getTodos(db, todoQueries.completed());
+  })
+  .then(function(result) {
+    res.render('todo/completed', {
+      todos: result,
+      date2Str: dateUtils.date2Str
+    });
+  })
+  .catch(function(err) {
+    console.log(err);
+    next(err);
+  })
+  .then(function() {
+    if (dbClient) {
+      dbClient.close();
+    }
+  });
 };
 
 exports.createGet = function(req, res) {
@@ -83,7 +110,7 @@ exports.createPost = function(req, res) {
     });
   };
 
-  connectionToDB()
+  dbUtils.connectionToDB()
   .then(function({ client, db }) {
     dbClient = client;
     var { title, description, status, estimatedDate } = req.body;
@@ -113,7 +140,7 @@ exports.delete = function(req, res) {
   var deleteOneTodo = function(db, id) {
     return new Promise(function(resolve, reject) {
       db.collection('todos')
-      .deleteOne({ _id: new mongodb.ObjectID(id) }, function(error, r) {
+      .deleteOne({ _id: dbUtils.createObjectID(id) }, function(error, r) {
         if (error) {
           reject(error);
         } else {
@@ -123,7 +150,7 @@ exports.delete = function(req, res) {
     });
   };
 
-  connectionToDB()
+  dbUtils.connectionToDB()
   .then(function({ client, db }) {
     dbClient = client;
     var { id } = req.params;

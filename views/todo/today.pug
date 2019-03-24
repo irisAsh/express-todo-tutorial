@@ -2,20 +2,6 @@ extends ../layout
 
 block content
   h1 今日のTODO
-  ul
-    li
-      p
-        | todo_1 [
-        a(href='') 編集
-        | ] [
-        a(href='') 削除
-        | ]
-    li
-      p
-        | todo_2 [
-        a(href='') 編集
-        | ] [
-        a(href='') 削除
-        | ]
+  include ./todo.pug
   p
     a(href='/') 戻る
