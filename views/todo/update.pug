@@ -4,7 +4,7 @@ block content
   h1 TODO 作成
 
   - var method = 'POST'
-  - var action = '/todo/create'
+  - var action = `/todo/update/${todo._id}?_method=PATCH`
   include ./form
 
   br

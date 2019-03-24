@@ -1,0 +1,42 @@
+form(method=method action=action)
+  div
+    label(for='title') タイトル：
+    input#title(
+      type='text'
+      placeholder='やること'
+      name='title'
+      required='true'
+      value=todo.title
+    )
+  div
+    label(for='description') 詳細説明：
+    input#description(
+      type='text'
+      placeholder='買い物に行く'
+      name='description'
+      value=todo.description
+    )
+  div
+    label(for='status') ステータス：
+    select#status(name='status')
+      option(
+        value='backlog'
+        selected= 'backlog' === todo.status
+      ) 未着手
+      option(
+        value='progress'
+        selected= 'progress' === todo.status
+      ) 着手中
+      option(
+        value='completed'
+        selected= 'completed' === todo.status
+      ) 完了済
+  div
+    label(for='estimatedDate') 予定時刻：
+    input#estimatedDate(
+      type='datetime-local'
+      name='estimatedDate'
+      value=todo.estimatedDateISOS
+    )
+  div
+    input(type='submit')

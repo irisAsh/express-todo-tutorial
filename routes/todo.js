@@ -10,6 +10,9 @@ router.get('/completed', todoController.completed);
 router.get('/create', todoController.createGet);
 router.post('/create', todoController.createPost);
 
+router.get('/update/:id', todoController.updateGet);
+router.patch('/update/:id', todoController.updatePatch);
+
 router.delete('/:id', todoController.delete);
 
 module.exports = router;

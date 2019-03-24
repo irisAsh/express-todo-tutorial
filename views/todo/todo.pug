@@ -8,7 +8,7 @@ if !!todos
         p #{date2Str(todo.estimatedDate)}
         p
           | [
-          a(href='') 編集
+          a(href=`/todo/update/${todo._id}`) 編集
           | ]
           form(method='POST' action=`/todo/${todo._id}?_method=DELETE`)
             div

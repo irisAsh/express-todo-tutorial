@@ -92,7 +92,7 @@ exports.completed = function(req, res) {
 };
 
 exports.createGet = function(req, res) {
-  res.render('todo/create');
+  res.render('todo/create', { todo: {} });
 };
 
 exports.createPost = function(req, res) {
@@ -169,3 +169,89 @@ exports.delete = function(req, res) {
     }
   });
 };
+exports.updateGet = function(req, res, next) {
+  var dbClient;
+  var findOne = function(db, id) {
+    return new Promise(function(resolve, reject) {
+      db.collection('todos')
+      .findOne(
+        { _id: dbUtils.createObjectID(id) },
+        function(error, docs) {
+          if (error) {
+            reject(error);
+          } else {
+            resolve(docs);
+          }
+        }
+      );
+    });
+  }
+
+  dbUtils.connectionToDB()
+  .then(function({ client, db }) {
+    dbClient = client;
+    var { id } = req.params;
+    return findOne(db, id);
+  })
+  .then(function(result) {
+    res.render('todo/update', {
+      todo: {
+        ...result,
+        estimatedDateISOS: dateUtils.date2ISOS(result.estimatedDate)
+      }
+    });
+  })
+  .catch(function(err) {
+    console.log(err);
+    next(err);
+  })
+  .then(function() {
+    if (dbClient) {
+      dbClient.close();
+    }
+  });
+}
+exports.updatePatch = function(req, res, next) {
+  var dbClient;
+  var updateOne = function(db, id, data) {
+    return new Promise(function(resolve, reject) {
+      db.collection('todos')
+      .updateOne(
+        { _id: dbUtils.createObjectID(id) },
+        { $set: data },
+        function(error, docs) {
+          if (error) {
+            reject(error);
+          } else {
+            resolve(docs);
+          }
+        }
+      );
+    });
+  }
+
+  dbUtils.connectionToDB()
+  .then(function({ client, db }) {
+    dbClient = client;
+    var { id } = req.params;
+    var { title, description, status, estimatedDate } = req.body;
+    return updateOne(db, id, {
+      title,
+      description,
+      status,
+      estimatedDate: new Date(estimatedDate)
+    });
+  })
+  .then(function(result) {
+    res.redirect('/todo');
+  })
+  .catch(function(err) {
+    console.log(err);
+    next(err);
+  })
+  .then(function() {
+    if (dbClient) {
+      dbClient.close();
+    }
+  });
+}
