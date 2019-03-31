@@ -14,17 +14,6 @@ var pugRouter = require('./routes/pug');
 
 var app = express();
 
-var MongoClient = require('mongodb').MongoClient;
-
-MongoClient.connect(
-  'mongodb://127.0.0.1:27017/express-todo-tutorial',
-  { useNewUrlParser: true },
-  function(err, client) {
-    console.log("Connected successfully to DB");
-    client.close();
-  }
-);
-
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'pug');
