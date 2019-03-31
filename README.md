@@ -13,4 +13,3 @@
 
 - Node.js
 - Express
-- MongoDB Node.JS Driver
