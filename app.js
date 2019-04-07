@@ -5,6 +5,12 @@ var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 var bodyParser = require('body-parser');
 var methodOverride = require('method-override')
+// DB connection
+var mongoose = require('mongoose');
+var constants = require('./lib/constants');
+mongoose.connect(constants.DB_URL + constants.DB_NAME, { useNewUrlParser: true });
+var db = mongoose.connection;
+db.on('error', console.error.bind(console, 'connection error:'));
 
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');

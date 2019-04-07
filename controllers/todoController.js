@@ -1,42 +1,43 @@
 var dateUtils = require('../lib/dateUtils');
+var Todo = require('../models/todo');
 
 exports.index = function(req, res, next) {
-  res.render('todo/index', {
-    todos: [
-      {
-        title: '買い物に行く',
-        description: 'キャベツを買う',
-        status: 'progress',
-        estimatedDate: new Date()
-      }
-    ],
-    date2Str: dateUtils.date2Str
+  Todo.queryNotCompleted().find().exec()
+  .then(function(todos) {
+    res.render('todo/index', {
+      todos: todos,
+      date2Str: dateUtils.date2Str
+    });
+  })
+  .catch(function(err) {
+    console.log(err);
+    next(err);
   });
 };
 exports.today = function(req, res) {
-  res.render('todo/today', {
-    todos: [
-      {
-        title: '買い物に行く',
-        description: 'キャベツを買う',
-        status: 'progress',
-        estimatedDate: new Date()
-      }
-    ],
-    date2Str: dateUtils.date2Str
+  Todo.queryToday().find().exec()
+  .then(function(todos) {
+    res.render('todo/today', {
+      todos: todos,
+      date2Str: dateUtils.date2Str
+    });
+  })
+  .catch(function(err) {
+    console.log(err);
+    next(err);
   });
 };
 exports.completed = function(req, res) {
-  res.render('todo/completed', {
-    todos: [
-      {
-        title: '買い物に行く',
-        description: 'キャベツを買う',
-        status: 'progress',
-        estimatedDate: new Date()
-      }
-    ],
-    date2Str: dateUtils.date2Str
+  Todo.queryCompleted().find().exec()
+  .then(function(todos) {
+    res.render('todo/completed', {
+      todos: todos,
+      date2Str: dateUtils.date2Str
+    });
+  })
+  .catch(function(err) {
+    console.log(err);
+    next(err);
   });
 };
 exports.createGet = function(req, res) {
