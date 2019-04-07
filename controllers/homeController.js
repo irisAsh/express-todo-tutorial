@@ -2,9 +2,9 @@ var Todo = require('../models/todo');
 
 exports.index = function(req, res) {
   Promise.all([
-    Todo.queryNotCompleted().countDocuments().exec(),
-    Todo.queryToday().countDocuments().exec(),
-    Todo.queryCompleted().countDocuments().exec()
+    Todo.countDocuments().queryNotCompleted().exec(),
+    Todo.countDocuments().queryToday().exec(),
+    Todo.countDocuments().queryCompleted().exec()
   ])
   .then(function(result) {
     res.render('home/index', {
