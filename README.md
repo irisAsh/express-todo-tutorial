@@ -13,8 +13,4 @@
 
 - Node.js
 - Express
-<<<<<<< HEAD
 - Less
-=======
-- MongoDB Node.JS Driver
->>>>>>> parent of e82b275... Fix README.md
