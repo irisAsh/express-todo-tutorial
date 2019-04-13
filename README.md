@@ -13,4 +13,3 @@
 
 - Node.js
 - Express
-- Stylus
