@@ -1,6 +1,6 @@
 # Express入門
 
-[Express入門](https://irisash.com/express/)のサンプルです。Expressを使って簡単なTodoアプリを作成しています。
+[Express入門](https://irisash.github.io/express/)のサンプルです。Expressを使って簡単なTodoアプリを作成しています。
 
 ## 概要
 
